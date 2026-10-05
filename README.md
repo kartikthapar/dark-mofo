@@ -14,10 +14,12 @@ It pairs with [flatty-mofo](../flatty-mofo), which darkens Firefox's own toolbar
 
 ## Instructions
 
-1. Open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on…** and pick `extension/manifest.json`. Firefox removes temporary add-ons when it quits, so repeat this after a restart. If Firefox asks, allow Dark Mofo on all websites; the toolbar popup also has an **Allow** button.
-2. Pin the half-moon button to the toolbar from the puzzle-piece menu.
+1. Create an API key at <https://addons.mozilla.org/developers/addon/api/key/>, then export it as `WEB_EXT_API_KEY` (the JWT issuer) and `WEB_EXT_API_SECRET` (the JWT secret).
+2. Run `./sign.sh`. It uploads the add-on to Mozilla as unlisted, which signs it without publishing it, and prints the path of the signed `.xpi` in `web-ext-artifacts/`. Bump `version` in `extension/manifest.json` before signing a new release; Mozilla won't sign the same version twice.
+3. Open the `.xpi` in Firefox (drag it onto a window, or **Install Add-on From File…** in `about:addons`) and accept. It stays installed across restarts. If Firefox asks, allow Dark Mofo on all websites; the toolbar popup also has an **Allow** button.
+4. Pin the half-moon button to the toolbar from the puzzle-piece menu.
 
-To keep Dark Mofo installed across restarts, use Firefox Developer Edition or Nightly. Set `xpinstall.signatures.required` to `false` in `about:config`, build the add-on with `npx web-ext build --source-dir extension`, and install the `.zip` from `web-ext-artifacts/` via **Install Add-on From File…** in `about:addons`.
+For a quick try while developing, open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on…** and pick `extension/manifest.json`. Firefox removes temporary add-ons when it quits.
 
 To run the tests, which load Dark Mofo into a headless Firefox and check it against the pages in `test/pages`:
 
