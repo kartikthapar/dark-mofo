@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>dark-mofo</h1>
+    <label class="switch"><input type="checkbox" id="enabled"> On</label>
+  </header>
+
+  <section id="grant" hidden>
+    <p>dark-mofo needs access to websites to change how they look.</p>
+    <button id="grant-button">Allow on all websites</button>
+  </section>
+
+  <section id="site" hidden>
+    <p id="site-name"></p>
+    <p id="site-status" class="muted"></p>
+    <div class="modes" role="radiogroup" aria-label="Mode for this site">
+      <label><input type="radio" name="mode" value="auto"> Auto</label>
+      <label><input type="radio" name="mode" value="dark"> Always darken</label>
+      <label><input type="radio" name="mode" value="off"> Never</label>
+    </div>
+  </section>
+
+  <p id="unavailable" class="muted" hidden>dark-mofo can't run on this page.</p>
+
+  <section id="exceptions" hidden>
+    <h2>Sites not on Auto</h2>
+    <ul id="exception-list"></ul>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>

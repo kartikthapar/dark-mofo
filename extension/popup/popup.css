@@ -1,0 +1,86 @@
+:root {
+  color-scheme: light dark;
+  font: menu;
+  font-size: 13px;
+}
+
+body {
+  width: 300px;
+  margin: 0;
+  padding: 12px 14px;
+  background: Canvas;
+  color: CanvasText;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1 {
+  font-size: 14px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 12px;
+  margin: 0 0 6px;
+}
+
+section {
+  margin-top: 12px;
+}
+
+p {
+  margin: 0 0 6px;
+}
+
+#site-name {
+  font-weight: 600;
+}
+
+.muted {
+  opacity: 0.7;
+}
+
+input {
+  accent-color: AccentColor;
+}
+
+.modes {
+  display: flex;
+  gap: 12px;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+li .host {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+li button {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+li button:hover {
+  opacity: 1;
+}

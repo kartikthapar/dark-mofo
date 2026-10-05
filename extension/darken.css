@@ -1,0 +1,29 @@
+/* The fallback for pages that stay light when Firefox wants dark.
+   content.js sets data-dark-mofo on <html> only after deciding the page has no
+   dark mode of its own, so nothing here applies until then. */
+
+html[data-dark-mofo] {
+  /* Contrast below 1 lifts pure black and dims pure white, which an inverted
+     white page would otherwise turn into harsh #000 behind #fff text. */
+  --dark-mofo-contrast: 0.9;
+  /* invert() flips lightness but also hues (blue links turn orange);
+     hue-rotate(180deg) turns the hues back. On the root this also covers the
+     canvas, so short pages are dark below their content too. */
+  filter: invert(1) hue-rotate(180deg) contrast(var(--dark-mofo-contrast)) !important;
+}
+
+/* Media is inverted a second time, which cancels the root filter so photos,
+   video and embeds look as they should. <picture> is left out because its <img>
+   is already matched, and inverting both would cancel out. */
+html[data-dark-mofo] :is(img, video, canvas, embed, object, iframe) {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* A fullscreen element moves to the top layer, out from under the root filter.
+   Give it the root filter itself, and leave fullscreen media untouched. */
+html[data-dark-mofo] :fullscreen {
+  filter: invert(1) hue-rotate(180deg) contrast(var(--dark-mofo-contrast)) !important;
+}
+html[data-dark-mofo] :is(img, video, canvas, embed, object, iframe):fullscreen {
+  filter: none !important;
+}

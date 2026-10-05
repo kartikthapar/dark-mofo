@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "dark-mofo",
+  "version": "0.1.0",
+  "description": "Keeps every website in the colour scheme Firefox asks for. Sites with their own dark mode are left alone; light-only sites are darkened.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dark-mofo@thapar.local",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": { "required": ["none"] }
+    }
+  },
+  "icons": {
+    "48": "icons/icon-dark.svg",
+    "96": "icons/icon-dark.svg"
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["darken.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_title": "dark-mofo",
+    "default_popup": "popup/popup.html",
+    "default_icon": "icons/icon-dark.svg",
+    "theme_icons": [
+      { "light": "icons/icon-light.svg", "dark": "icons/icon-dark.svg", "size": 16 },
+      { "light": "icons/icon-light.svg", "dark": "icons/icon-dark.svg", "size": 32 }
+    ]
+  }
+}
