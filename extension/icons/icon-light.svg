@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.25" fill="none" stroke="#fbfbfe" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="#fbfbfe"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <mask id="m">
+      <rect width="16" height="16" fill="#fff"/>
+      <path d="M8.6 6.2h4.1v.9c0 1.4-.9 2.2-2.05 2.2S8.6 8.5 8.6 7.1z" fill="#000"/>
+    </mask>
+  </defs>
+  <circle cx="8" cy="8" r="6.25" fill="none" stroke="#fbfbfe" stroke-width="1.5"/>
+  <path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="#fbfbfe" mask="url(#m)"/>
+  <path d="M3.3 6.2h4.1v.9c0 1.4-.9 2.2-2.05 2.2S3.3 8.5 3.3 7.1z M7.2 6.6h1.6" fill="#fbfbfe" stroke="#fbfbfe" stroke-width=".6" stroke-linejoin="round"/>
+</svg>

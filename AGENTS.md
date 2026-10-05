@@ -1,9 +1,10 @@
 # dark-mofo
 
-A Firefox WebExtension (Manifest V3) that keeps web pages in the colour scheme Firefox asks for. It never adds a dark mode to a site that has one: it measures the page and only applies a filter when the page stays light while `prefers-color-scheme: dark` matches. It never lightens a dark page.
+Dark Mofo (`dark-mofo` is the project and folder name) is a Firefox WebExtension (Manifest V3) that keeps web pages in the colour scheme Firefox asks for. It never adds a dark mode to a site that has one: it measures the page and only applies a filter when the page stays light while `prefers-color-scheme: dark` matches. It never lightens a dark page.
 
 ## Layout
 
+- `extension/icons/logo.svg`: the add-on logo (half-light, half-dark disc wearing shades). `icon-dark.svg` and `icon-light.svg` are the monochrome toolbar versions for light and dark Firefox themes.
 - `extension/content.js`: runs at `document_start` in top-level documents. Decides per page and toggles `data-dark-mofo` on `<html>`.
 - `extension/darken.css`: the filter, keyed on that attribute. Injected by the manifest, so it costs nothing until the attribute is set.
 - `extension/popup/`: toolbar popup. Talks to the content script with a `{type: "status"}` message and writes settings to `storage.local`.

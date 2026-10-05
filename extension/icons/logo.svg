@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b3058"/>
+      <stop offset="1" stop-color="#0e1022"/>
+    </linearGradient>
+    <clipPath id="disc"><circle cx="64" cy="64" r="42"/></clipPath>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- A page that is half light, half dark: the switch dark-mofo makes. -->
+  <g clip-path="url(#disc)">
+    <rect width="64" height="128" fill="#f6efe1"/>
+    <rect x="64" width="64" height="128" fill="#15172b"/>
+  </g>
+  <circle cx="64" cy="64" r="42" fill="none" stroke="#f6efe1" stroke-width="4"/>
+  <!-- Shades: dark mode, with attitude. -->
+  <g stroke="#f2b84b" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M21 54h7M100 54h7M60 56c2.5-2.2 5.5-2.2 8 0" fill="none"/>
+    <path d="M28 51h32v8c0 10.5-7 16.5-16 16.5S28 69.5 28 59z" fill="#0b0c16"/>
+    <path d="M68 51h32v8c0 10.5-7 16.5-16 16.5S68 69.5 68 59z" fill="#0b0c16"/>
+  </g>
+  <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="2.5" stroke-linecap="round">
+    <path d="M34 60l7-5M74 60l7-5"/>
+  </g>
+</svg>

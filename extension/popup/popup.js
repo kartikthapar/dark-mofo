@@ -2,10 +2,10 @@ const ALL_SITES = { origins: ["<all_urls>"] };
 
 const STATUS_TEXT = {
   pending: "Checking this page…",
-  disabled: "dark-mofo is off.",
+  disabled: "Dark Mofo is off.",
   "light-wanted": "Firefox is in light mode, so pages are left as they are.",
   native: "This site has its own dark mode, so it is left as it is.",
-  darkened: "This site has no dark mode, so dark-mofo is darkening it.",
+  darkened: "This site has no dark mode, so Dark Mofo is darkening it.",
   forced: "Always darkened.",
   off: "Never darkened.",
 };

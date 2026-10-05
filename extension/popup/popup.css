@@ -19,6 +19,9 @@ header {
 }
 
 h1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 14px;
   margin: 0;
 }

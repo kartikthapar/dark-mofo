@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "dark-mofo",
+  "name": "Dark Mofo",
   "version": "0.1.0",
   "description": "Keeps every website in the colour scheme Firefox asks for. Sites with their own dark mode are left alone; light-only sites are darkened.",
   "browser_specific_settings": {
@@ -11,8 +11,8 @@
     }
   },
   "icons": {
-    "48": "icons/icon-dark.svg",
-    "96": "icons/icon-dark.svg"
+    "48": "icons/logo.svg",
+    "96": "icons/logo.svg"
   },
   "permissions": ["storage"],
   "host_permissions": ["<all_urls>"],
@@ -25,7 +25,7 @@
     }
   ],
   "action": {
-    "default_title": "dark-mofo",
+    "default_title": "Dark Mofo",
     "default_popup": "popup/popup.html",
     "default_icon": "icons/icon-dark.svg",
     "theme_icons": [
