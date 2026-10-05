@@ -10,6 +10,21 @@ Dark Mofo is a Firefox extension that keeps every website in the colour scheme F
 - Dark Mofo remembers which sites it darkened, so on the next visit they open dark without a white flash.
 - The toolbar button shows what Dark Mofo is doing on the current site. You can set a site to **Always darken** or **Never**, or turn Dark Mofo off everywhere.
 
+With Firefox in dark mode, a light-only site such as Hacker News stays white on its own (left). Dark Mofo darkens it, keeping the orange header orange (right):
+
+<p>
+  <img src="docs/screenshots/light-site-before.png" alt="Hacker News with Firefox in dark mode, still white" width="49%">
+  <img src="docs/screenshots/light-site-after.png" alt="Hacker News darkened by Dark Mofo" width="49%">
+</p>
+
+The Python docs have their own dark theme, so Dark Mofo leaves them alone:
+
+<img src="docs/screenshots/native-dark-site.png" alt="The Python docs in their own dark theme, untouched by Dark Mofo" width="70%">
+
+The toolbar popup says what it is doing on the current site, sets the site to **Auto**, **Always darken** or **Never**, and lists the sites you have set:
+
+<img src="docs/screenshots/popup.png" alt="The Dark Mofo popup open over a darkened Hacker News" width="70%">
+
 It pairs with [flatty-mofo](https://github.com/kartikthapar/flatty-mofo), which darkens Firefox's own toolbars and tabs.
 
 ## Instructions
@@ -29,3 +44,5 @@ node test/run.mjs
 ```
 
 Screenshots of each page in light and dark mode are written to `test/out/`.
+
+To retake the README screenshots in `docs/screenshots/` (this visits live sites), run `node test/screenshots.mjs`.
