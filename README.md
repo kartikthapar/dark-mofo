@@ -10,7 +10,7 @@ Dark Mofo is a Firefox extension that keeps every website in the colour scheme F
 - Dark Mofo remembers which sites it darkened, so on the next visit they open dark without a white flash.
 - The toolbar button shows what Dark Mofo is doing on the current site. You can set a site to **Always darken** or **Never**, or turn Dark Mofo off everywhere.
 
-It pairs with [flatty-mofo](../flatty-mofo), which darkens Firefox's own toolbars and tabs.
+It pairs with [flatty-mofo](https://github.com/kartikthapar/flatty-mofo), which darkens Firefox's own toolbars and tabs.
 
 ## Instructions
 

@@ -1,6 +1,20 @@
 {
-  "categories": ["appearance"],
-  "summary": { "en-US": "Keeps every website in the colour scheme Firefox asks for. Sites with their own dark mode are left alone; light-only sites are darkened." },
-  "description": { "en-US": "Firefox tells websites whether to be light or dark, following its theme or macOS. Plenty of sites ignore that and stay white. Dark Mofo checks each page and only steps in when it stays light while you are in dark mode.\n\n- Sites with their own dark mode keep it, including ones that switch themes after loading.\n- Light-only sites are darkened, with photos, video and embeds flipped back so they look normal.\n- In light mode, Dark Mofo does nothing.\n- It remembers which sites it darkened, so they open dark without a white flash.\n- The toolbar button shows what it is doing on the current site. Set a site to Always darken or Never, or turn it off everywhere.\n\nDark Mofo collects no data. Its settings stay in your browser." },
-  "version": { "license": "MIT" }
+  "categories": [
+    "appearance"
+  ],
+  "summary": {
+    "en-US": "Keeps every website in the colour scheme Firefox asks for. Sites with their own dark mode are left alone; light-only sites are darkened."
+  },
+  "description": {
+    "en-US": "Firefox tells websites whether to be light or dark, following its theme or macOS. Plenty of sites ignore that and stay white. Dark Mofo checks each page and only steps in when it stays light while you are in dark mode.\n\n- Sites with their own dark mode keep it, including ones that switch themes after loading.\n- Light-only sites are darkened, with photos, video and embeds flipped back so they look normal.\n- In light mode, Dark Mofo does nothing.\n- It remembers which sites it darkened, so they open dark without a white flash.\n- The toolbar button shows what it is doing on the current site. Set a site to Always darken or Never, or turn it off everywhere.\n\nDark Mofo collects no data. Its settings stay in your browser."
+  },
+  "version": {
+    "license": "MIT"
+  },
+  "homepage": {
+    "en-US": "https://github.com/kartikthapar/dark-mofo"
+  },
+  "support_url": {
+    "en-US": "https://github.com/kartikthapar/dark-mofo/issues"
+  }
 }
