@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dark Mofo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Keeps every website in the colour scheme Firefox asks for. Sites with their own dark mode are left alone; light-only sites are darkened.",
   "browser_specific_settings": {
     "gecko": {

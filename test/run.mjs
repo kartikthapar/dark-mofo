@@ -17,16 +17,23 @@ const FIREFOX = process.env.FIREFOX ?? "/Applications/Firefox.app";
 const UUID = "da4c0f00-0000-4000-8000-000000000001";
 
 // Each page gets its own *.localhost host, because dark-mofo remembers verdicts per host.
+// A page is sent in two parts split at <!--stall-->, two seconds apart, so it is
+// still parsing with its content on screen, like a long page on a slow network.
 const server = createServer(async (req, res) => {
   try {
-    const body = await readFile(join(here, "pages", req.url.split("?")[0]));
-    res.writeHead(200, { "content-type": "text/html; charset=utf-8" }).end(body);
+    const body = await readFile(join(here, "pages", req.url.split("?")[0]), "utf8");
+    const [head, tail] = body.split("<!--stall-->");
+    res.writeHead(200, { "content-type": "text/html; charset=utf-8" });
+    if (tail === undefined) return res.end(head);
+    res.write(head);
+    await sleep(2000);
+    res.end(tail);
   } catch {
     res.writeHead(404).end();
   }
 }).listen(0);
 const port = server.address().port;
-const url = (name) => `http://${name}.localhost:${port}/${name}.html`;
+const url = (name, host = name) => `http://${host}.localhost:${port}/${name}.html`;
 
 // [page, expected in dark mode]; nothing is ever darkened in light mode.
 const cases = [
@@ -137,6 +144,14 @@ for (const dark of [true, false]) {
     check(`${scheme} toggle after`, await darkened(page), false);
 
     if (dark) {
+      // Judged while the page is still parsing, not at DOMContentLoaded.
+      let loading = page.goto(url("slow"), { waitUntil: "load" });
+      await sleep(800);
+      check("slow light while parsing", await darkened(page), true);
+      check("slow light readyState", await page.evaluate(() => document.readyState), "loading");
+      await page.screenshot({ path: join(out, "dark-slow.png") });
+      await loading;
+
       // Per-site overrides and the global switch, set from an extension page.
       const ext = await openExtensionPage(browser, "popup/popup.html");
       await sleep(300);
@@ -168,6 +183,14 @@ for (const dark of [true, false]) {
       // Cached verdict: a remembered site is darkened before load finishes.
       await page.goto(url("light"), { waitUntil: "domcontentloaded" });
       check("cached light at DOMContentLoaded", await darkened(page), true);
+
+      // A site darkened last time that now has its own dark theme (google.com
+      // after its first visit) must not be inverted while it loads.
+      await store({ darkened: { "stale.localhost": true } });
+      loading = page.goto(url("slownative", "stale"), { waitUntil: "load" });
+      await sleep(800);
+      check("stale verdict dropped while parsing", await darkened(page), false);
+      await loading;
     }
   } finally {
     // Also on failure, or the headless Firefox outlives the test.

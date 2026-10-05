@@ -1,6 +1,6 @@
 /* The fallback for pages that stay light when Firefox wants dark.
    content.js sets data-dark-mofo on <html> only after deciding the page has no
-   dark mode of its own, so nothing here applies until then. */
+   dark mode of its own, so the filter applies only then. */
 
 html[data-dark-mofo] {
   /* Contrast below 1 lifts pure black and dims pure white, which an inverted
@@ -10,6 +10,13 @@ html[data-dark-mofo] {
      hue-rotate(180deg) turns the hues back. On the root this also covers the
      canvas, so short pages are dark below their content too. */
   filter: invert(1) hue-rotate(180deg) contrast(var(--dark-mofo-contrast)) !important;
+}
+
+/* Set by content.js from document_start until the page can be judged, so the
+   canvas Firefox paints before the page's content arrives is dark rather than
+   white. #1c1b22 is Firefox's own dark page background. */
+html[data-dark-mofo-pending] {
+  background-color: #1c1b22 !important;
 }
 
 /* Media is inverted a second time, which cancels the root filter so photos,

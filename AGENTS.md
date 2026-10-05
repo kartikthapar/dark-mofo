@@ -15,7 +15,8 @@ Dark Mofo (`dark-mofo` is the project and folder name) is a Firefox WebExtension
 - A page "looks dark" when most of a 3x3 grid of viewport points sits on a background with luminance below `DARK_LUMINANCE`. Each point walks up from `elementFromPoint` to the first opaque `background-color`. Background images and gradients count as unknown rather than guessed.
 - Below the content, the canvas shows `<body>`'s background if `<html>` has none (CSS background propagation), else the `Canvas` system colour for the page's `color-scheme`. A probe element resolves `Canvas`, which is how `color-scheme: light dark` pages count as natively dark.
 - CSS `filter` doesn't change computed styles, so detection reads the page's own colours even while dark-mofo is darkening it. Re-checks after load, on `<html>`/`<body>` attribute changes and on body child changes are therefore safe and catch sites that switch themes late.
-- `storage.local` keys: `enabled` (global switch), `sites` (`{host: "dark" | "off"}`, absent means auto), `darkened` (`{host: true}`, last auto verdict, used to darken at `document_start` before the page paints).
+- While the page parses, `content.js` judges it on every animation frame, which runs just before paint, so the verdict lands in the frame where content first shows. Until then `data-dark-mofo-pending` paints the canvas dark; `measure()` lifts it while reading colours, and DOMContentLoaded drops it if the page still can't be judged. The cached verdict is only used while the page has nothing to measure.
+- `storage.local` keys: `enabled` (global switch), `sites` (`{host: "dark" | "off"}`, absent means auto), `darkened` (`{host: true}`, last auto verdict, used to darken before the page can be measured).
 
 ## Writing rules
 

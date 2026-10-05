@@ -8,6 +8,8 @@
   if (!/^(text\/html|application\/xhtml\+xml|text\/plain)$/.test(document.contentType)) return;
 
   const ATTR = "data-dark-mofo";
+  // Paints the canvas dark while the page can't be judged yet (see darken.css).
+  const PENDING = "data-dark-mofo-pending";
   const DARK_LUMINANCE = 0.2; // below this a background reads as dark (#7f7f7f is ~0.21)
   const root = document.documentElement;
   const site = location.hostname || location.protocol; // file: pages share one entry
@@ -19,10 +21,18 @@
   let settings = { enabled: true, sites: {}, darkened: {} };
   let state = "pending";
   let darkening = false;
+  let settingsLoaded = false;
+  let parsed = false; // DOMContentLoaded has fired
+
+  // A blank page about to be judged starts dark when dark is wanted, so the
+  // first paint isn't white. Settings aren't loaded yet; a site set to "off"
+  // just shows a dark canvas for a few milliseconds.
+  if (darkQuery.matches) root.toggleAttribute(PENDING, true);
 
   function setDarkening(on, why) {
     state = why;
     darkening = on;
+    root.removeAttribute(PENDING);
     if (on !== root.hasAttribute(ATTR)) root.toggleAttribute(ATTR, on);
   }
 
@@ -91,9 +101,21 @@
     return dark > light;
   }
 
+  // The pending canvas is the page's own <html> background as far as
+  // getComputedStyle is concerned, so it is lifted while measuring. Nothing
+  // paints in between.
+  function measure() {
+    const pending = root.hasAttribute(PENDING);
+    if (pending) root.removeAttribute(PENDING);
+    const dark = pageLooksDark();
+    if (pending && dark === null) root.setAttribute(PENDING, "");
+    return dark;
+  }
+
   // --- Deciding -------------------------------------------------------------
 
   function evaluate() {
+    if (!settingsLoaded) return;
     const mode = settings.sites[site] ?? "auto";
     if (!settings.enabled) return setDarkening(false, "disabled");
     if (!darkQuery.matches) return setDarkening(false, "light-wanted");
@@ -102,7 +124,7 @@
 
     // The filter doesn't change computed styles, so this reads the page's own
     // colours even while it is being darkened.
-    const dark = pageLooksDark();
+    const dark = measure();
     if (dark === null) return;
     setDarkening(!dark, dark ? "native" : "darkened");
     remember(!dark);
@@ -110,6 +132,9 @@
 
   async function remember(darkened) {
     if (!!settings.darkened[site] === darkened) return;
+    // Updated here too, as the page is judged every frame while it loads.
+    if (darkened) settings.darkened[site] = true;
+    else delete settings.darkened[site];
     const { darkened: stored = {} } = await browser.storage.local.get("darkened");
     if (darkened) stored[site] = true;
     else delete stored[site];
@@ -126,6 +151,16 @@
     });
   }
 
+  // While the page is parsing, judge it every frame. Animation frame callbacks
+  // run right before paint, so the verdict lands in the frame where the content
+  // first shows. Sites that load slow scripts before DOMContentLoaded (google.com)
+  // were painted white for a few hundred milliseconds before this.
+  function pollWhileParsing() {
+    if (parsed) return;
+    evaluate();
+    requestAnimationFrame(pollWhileParsing);
+  }
+
   // --- Wiring ---------------------------------------------------------------
 
   async function loadSettings() {
@@ -135,25 +170,30 @@
       sites: stored.sites ?? {},
       darkened: stored.darkened ?? {},
     };
+    settingsLoaded = true;
   }
 
   loadSettings().then(() => {
-    // Before the page has painted, trust last visit's verdict to avoid a white flash.
-    const mode = settings.sites[site] ?? "auto";
-    if (settings.enabled && darkQuery.matches && mode !== "off" &&
-        (mode === "dark" || settings.darkened[site])) {
-      setDarkening(true, mode === "dark" ? "forced" : "darkened");
-    }
-    if (document.readyState !== "loading") scheduleEvaluate();
+    evaluate();
+    // A page with no body yet can't be measured. Until it can, trust last
+    // visit's verdict; if the site has since turned dark, the first
+    // measurement removes the filter again.
+    if (state === "pending" && settings.darkened[site]) setDarkening(true, "darkened");
+    if (!parsed) requestAnimationFrame(pollWhileParsing);
   });
 
   function watch() {
+    parsed = true;
+    // A page that still can't be judged (background images everywhere) shows
+    // as it is rather than staying dark.
+    root.removeAttribute(PENDING);
     scheduleEvaluate();
     // Sites switch themes by changing attributes on <html> or <body>, and
     // single-page apps swap body content; both can change the verdict.
     // This also restores our attribute if the page rewrites <html>'s attributes.
     const observer = new MutationObserver((records) => {
-      if (records.every((r) => r.attributeName === ATTR && root.hasAttribute(ATTR) === darkening)) return;
+      if (records.every((r) => r.attributeName === PENDING ||
+          (r.attributeName === ATTR && root.hasAttribute(ATTR) === darkening))) return;
       scheduleEvaluate();
     });
     observer.observe(root, { attributes: true });
