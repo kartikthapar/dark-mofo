@@ -16,8 +16,8 @@
   const darkQuery = matchMedia("(prefers-color-scheme: dark)");
 
   // enabled: global switch. sites[site]: "dark" (always darken) or "off" (never).
-  // darkened[site]: auto mode darkened this site last time, so start dark on the
-  // next visit instead of flashing white until the page has loaded.
+  // darkened[site]: auto mode darkened this site last time, so a page whose
+  // content can't be measured yet starts darkened on the next visit.
   let settings = { enabled: true, sites: {}, darkened: {} };
   let state = "pending";
   let darkening = false;
@@ -125,7 +125,17 @@
     // The filter doesn't change computed styles, so this reads the page's own
     // colours even while it is being darkened.
     const dark = measure();
-    if (dark === null) return;
+    if (dark === null) {
+      // Content that can't be judged yet (background images) gets last visit's
+      // verdict. Not before <body> exists: the pending canvas already covers
+      // that, and a page whose <head> declares `color-scheme: dark` (google.com
+      // once it serves its own dark theme) has a dark canvas the filter would
+      // invert to white.
+      if (state === "pending" && document.body && settings.darkened[site]) {
+        setDarkening(true, "darkened");
+      }
+      return;
+    }
     setDarkening(!dark, dark ? "native" : "darkened");
     remember(!dark);
   }
@@ -175,10 +185,6 @@
 
   loadSettings().then(() => {
     evaluate();
-    // A page with no body yet can't be measured. Until it can, trust last
-    // visit's verdict; if the site has since turned dark, the first
-    // measurement removes the filter again.
-    if (state === "pending" && settings.darkened[site]) setDarkening(true, "darkened");
     if (!parsed) requestAnimationFrame(pollWhileParsing);
   });
 

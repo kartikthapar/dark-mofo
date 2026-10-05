@@ -191,6 +191,16 @@ for (const dark of [true, false]) {
       await sleep(800);
       check("stale verdict dropped while parsing", await darkened(page), false);
       await loading;
+
+      // google.com in its own dark theme declares color-scheme in <head>, so the
+      // canvas is dark before <body> arrives. A stale verdict must not invert it
+      // to white while the body is on its way.
+      await store({ darkened: { "darkhead.localhost": true } });
+      loading = page.goto(url("darkhead"), { waitUntil: "load" });
+      await sleep(800);
+      check("stale verdict before body", await darkened(page), false);
+      await page.screenshot({ path: join(out, "dark-darkhead.png") });
+      await loading;
     }
   } finally {
     // Also on failure, or the headless Firefox outlives the test.
