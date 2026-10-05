@@ -31,6 +31,12 @@ Run `node test/run.mjs` after `npm --prefix test install`. Some sandboxed shells
 
 Run `npx web-ext lint --source-dir extension` before signing.
 
+## Releasing
+
+`./sign.sh listed` lints and submits a new version to the add-ons store with the listing in `amo-metadata.json`; `./sign.sh` (unlisted) signs an `.xpi` without publishing it. Both need `WEB_EXT_API_KEY` and `WEB_EXT_API_SECRET` in the environment, and Mozilla refuses a version it has already signed, so bump `version` in `extension/manifest.json` first. Never commit keys or `~/.config/amo.env`.
+
+`node test/screenshots.mjs` retakes the README screenshots in `docs/screenshots/` from live sites.
+
 ## README
 
 README.md has exactly two sections: what it is, and instructions.
