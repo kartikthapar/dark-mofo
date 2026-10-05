@@ -15,7 +15,7 @@ It pairs with [flatty-mofo](../flatty-mofo), which darkens Firefox's own toolbar
 ## Instructions
 
 1. Create an API key at <https://addons.mozilla.org/developers/addon/api/key/>, then export it as `WEB_EXT_API_KEY` (the JWT issuer) and `WEB_EXT_API_SECRET` (the JWT secret).
-2. Run `./sign.sh`. It uploads the add-on to Mozilla as unlisted, which signs it without publishing it, and prints the path of the signed `.xpi` in `web-ext-artifacts/`. Bump `version` in `extension/manifest.json` before signing a new release; Mozilla won't sign the same version twice.
+2. Run `./sign.sh`. It uploads the add-on to Mozilla as unlisted, which signs it without publishing it, and prints the path of the signed `.xpi` in `web-ext-artifacts/`. Bump `version` in `extension/manifest.json` before signing a new release; Mozilla won't sign the same version twice. `./sign.sh listed` submits a public version to the store instead, using the listing in `amo-metadata.json`.
 3. Open the `.xpi` in Firefox (drag it onto a window, or **Install Add-on From File…** in `about:addons`) and accept. It stays installed across restarts. If Firefox asks, allow Dark Mofo on all websites; the toolbar popup also has an **Allow** button.
 4. Pin the half-moon button to the toolbar from the puzzle-piece menu.
 

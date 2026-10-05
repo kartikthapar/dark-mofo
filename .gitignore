@@ -2,3 +2,4 @@
 node_modules/
 test/out/
 web-ext-artifacts/
+.amo-upload-uuid
